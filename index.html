@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A Journey of Community Service</title>
+  <style>
+    :root {
+      --navy: #14263D;
+      --gold: #C5A46D;
+      --ivory: #FAF8F4;
+      --text: #293442;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--ivory);
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+    header {
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      padding: 85px 20px 75px;
+    }
+    header h1 {
+      font-family: Georgia, serif;
+      font-size: clamp(36px, 5vw, 62px);
+      font-weight: normal;
+      margin: 0 0 22px;
+    }
+    .gold-line {
+      width: 85px;
+      height: 3px;
+      background: var(--gold);
+      margin: 0 auto 25px;
+    }
+    .tagline {
+      color: #E5D0AA;
+      font-size: clamp(17px, 2vw, 23px);
+      line-height: 1.5;
+    }
+    .subtitle {
+      color: #DFE5EC;
+      margin-top: 20px;
+      font-size: 15px;
+      letter-spacing: 1px;
+    }
+    main {
+      max-width: 1150px;
+      margin: auto;
+      padding: 65px 24px 90px;
+    }
+    .intro {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 50px;
+      line-height: 1.8;
+      font-size: 17px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+    }
+    .card {
+      background: white;
+      border: 1px solid #EAE4DA;
+      border-radius: 14px;
+      padding: 40px 30px;
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: 0 8px 28px rgba(20,38,61,.06);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(20,38,61,.13);
+    }
+    .card .number {
+      color: var(--gold);
+      font-size: 15px;
+      letter-spacing: 2px;
+    }
+    .card h2 {
+      font-family: Georgia, serif;
+      color: var(--navy);
+      font-size: 28px;
+      font-weight: normal;
+      margin: 15px 0;
+    }
+    .card p {
+      line-height: 1.7;
+      margin-bottom: 25px;
+    }
+    .card .explore {
+      color: #96723A;
+      font-weight: 600;
+    }
+    footer {
+      background: var(--navy);
+      color: #DFE5EC;
+      text-align: center;
+      padding: 28px 15px;
+      font-size: 14px;
+    }
+    @media (max-width: 650px) {
+      header { padding: 60px 20px; }
+      main { padding: 45px 18px; }
+      .grid { grid-template-columns: 1fr; }
+      .card { padding: 30px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>A Journey of Community Service</h1>
+  <div class="gold-line"></div>
+  <div class="tagline">
+    Knowledge Empowers.<br>
+    Early Detection Saves Lives.
+  </div>
+  <div class="subtitle">
+    Cancer Awareness | Breast Cancer Awareness
+  </div>
+</header>
+
+<main>
+  <div class="intro">
+    A collection of meaningful initiatives, recognitions,
+    distinguished encounters and special occasions,
+    reflecting a continuing commitment to awareness,
+    education and community well-being.
+  </div>
+
+  <div class="grid">
+    <a class="card" href="awareness.html">
+      <div class="number">01</div>
+      <h2>Awareness &amp; Education</h2>
+      <p>
+        Sharing knowledge, encouraging prevention
+        and promoting the importance of early detection.
+      </p>
+      <span class="explore">Explore Collection →</span>
+    </a>
+
+    <a class="card" href="recognitions.html">
+      <div class="number">02</div>
+      <h2>Recognitions</h2>
+      <p>
+        Honours and acknowledgements celebrating
+        contributions to healthcare and community service.
+      </p>
+      <span class="explore">Explore Collection →</span>
+    </a>
+
+    <a class="card" href="encounters.html">
+      <div class="number">03</div>
+      <h2>Distinguished Encounters</h2>
+      <p>
+        Memorable interactions with distinguished
+        personalities and community leaders.
+      </p>
+      <span class="explore">Explore Collection →</span>
+    </a>
+
+    <a class="card" href="occasions.html">
+      <div class="number">04</div>
+      <h2>Special Occasions</h2>
+      <p>
+        Celebrating community milestones,
+        cultural connections and meaningful gatherings.
+      </p>
+      <span class="explore">Explore Collection →</span>
+    </a>
+  </div>
+</main>
+
+<footer>
+  A Journey of Community Service
+</footer>
+
+</body>
+</html>
