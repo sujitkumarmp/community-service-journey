@@ -126,6 +126,86 @@ main {
   cursor:pointer;
 }
 .photos img:hover { opacity:.9; }
+
+/* Full-screen photo viewer */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(8, 17, 31, 0.96);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 65px 60px;
+  color: white;
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: calc(100vh - 160px);
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.lightbox-close {
+  top: 16px;
+  right: 20px;
+}
+
+.lightbox-prev {
+  left: 12px;
+  top: 50%;
+}
+
+.lightbox-next {
+  right: 12px;
+  top: 50%;
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 22px;
+  text-align: center;
+  font-size: 14px;
+  color: #e3c08c;
+}
+
+.lightbox button:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+@media(max-width:650px) {
+  .lightbox {
+    padding: 65px 45px;
+  }
+  .lightbox-prev {
+    left: 3px;
+  }
+  .lightbox-next {
+    right: 3px;
+  }
+}
+
+  
 footer {
   text-align:center;
   background:var(--navy);
@@ -162,6 +242,33 @@ footer {
 </main>
 
 <footer>A Journey of Community Service</footer>
+
+  
+<div id="lightbox" class="lightbox"
+     role="dialog"
+     aria-modal="true"
+     aria-label="Event photo viewer"
+     hidden>
+  <button id="lightboxClose"
+          class="lightbox-close"
+          aria-label="Close photo viewer">×</button>
+
+  <button id="lightboxPrev"
+          class="lightbox-prev"
+          aria-label="Previous photograph">‹</button>
+
+  <img id="lightboxImage"
+       class="lightbox-image"
+       alt="Event photograph">
+
+  <button id="lightboxNext"
+          class="lightbox-next"
+          aria-label="Next photograph">›</button>
+
+  <div id="lightboxCounter"
+       class="lightbox-counter"></div>
+</div>
+
 
 <script>
 async function loadEvents() {
@@ -281,8 +388,10 @@ async function loadEvents() {
           const link = document.createElement("a");
           link.className = "photo-link";
           link.href = photo;
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
+link.addEventListener("click", (e) => {
+  e.preventDefault();
+  openLightbox(photos, index);
+});
           link.setAttribute("aria-label",
             "Open photograph " + (index + 1) +
             " from " + (event.title || "event")
@@ -326,6 +435,92 @@ async function loadEvents() {
       "The collection could not be loaded. Please try again.";
   }
 }
+
+let activePhotos = [];
+let activeIndex = 0;
+let previousFocus = null;
+
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightboxImage");
+const lightboxCounter = document.getElementById("lightboxCounter");
+
+function showLightboxPhoto() {
+  lightboxImage.src = activePhotos[activeIndex];
+  lightboxCounter.textContent =
+    (activeIndex + 1) + " / " + activePhotos.length;
+}
+
+function openLightbox(photos, index) {
+  previousFocus = document.activeElement;
+  activePhotos = photos;
+  activeIndex = index;
+  showLightboxPhoto();
+  lightbox.hidden = false;
+  document.body.style.overflow = "hidden";
+  document.getElementById("lightboxClose").focus();
+}
+
+function closeLightbox() {
+  lightbox.hidden = true;
+  lightboxImage.removeAttribute("src");
+  document.body.style.overflow = "";
+  if (previousFocus) previousFocus.focus();
+}
+
+function moveLightbox(step) {
+  activeIndex =
+    (activeIndex + step + activePhotos.length) %
+    activePhotos.length;
+  showLightboxPhoto();
+}
+
+document.getElementById("lightboxClose")
+  .addEventListener("click", closeLightbox);
+
+document.getElementById("lightboxPrev")
+  .addEventListener("click", () => moveLightbox(-1));
+
+document.getElementById("lightboxNext")
+  .addEventListener("click", () => moveLightbox(1));
+
+document.addEventListener("keydown", (e) => {
+  if (lightbox.hidden) return;
+
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") moveLightbox(-1);
+  if (e.key === "ArrowRight") moveLightbox(1);
+
+  if (e.key === "Tab") {
+    const controls = [
+      document.getElementById("lightboxClose"),
+      document.getElementById("lightboxPrev"),
+      document.getElementById("lightboxNext")
+    ];
+    const current = controls.indexOf(document.activeElement);
+    if (e.shiftKey && current === 0) {
+      e.preventDefault();
+      controls[2].focus();
+    } else if (!e.shiftKey && current === 2) {
+      e.preventDefault();
+      controls[0].focus();
+    }
+  }
+});
+
+let touchStartX = 0;
+
+lightbox.addEventListener("touchstart", (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+}, {passive:true});
+
+lightbox.addEventListener("touchend", (e) => {
+  const difference =
+    e.changedTouches[0].screenX - touchStartX;
+
+  if (Math.abs(difference) > 50) {
+    moveLightbox(difference < 0 ? 1 : -1);
+  }
+}, {passive:true});
 
 loadEvents();
 </script>
