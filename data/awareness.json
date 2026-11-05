@@ -20,13 +20,20 @@
 ]
 
   },
-  {
-    "id": "kuwait-flour-mills-2026",
-    "title": "Breast Cancer Awareness at Kuwait Flour Mills",
-    "date": "2026-10-15",
-    "organizer": "Kuwait Flour Mills",
-    "summary": "An educational awareness session emphasizing breast cancer awareness, early detection and preventive healthcare.",
-    "description": "An educational awareness session emphasizing breast cancer awareness, early detection and preventive healthcare.",
-    "photos": []
-  }
-]
+  
+{
+  "id": "kuwait-flour-mills-2026",
+  "title": "Empowering Through Awareness – Kuwait Flour Mills",
+  "date": "2026-10-15",
+  "organizer": "Marketing Department – Public Relations Unit, Kuwait Flour Mills & Bakeries Co.",
+  "venue": "Meeting Room Hall, Administration Building, Shuwaikh HQ, Kuwait",
+  "summary": "A meaningful breast cancer awareness seminar bringing together employees of Kuwait Flour Mills & Bakeries Co., promoting informed healthcare decisions, early detection and greater awareness of women's health.",
+  "description": "As part of its annual Breast Cancer Awareness initiative, Kuwait Flour Mills & Bakeries Co. organised a special educational seminar titled Empowering Through Awareness at its Shuwaikh headquarters.\n\nThe programme brought together women employees for an informative session addressing cancer awareness, breast cancer risk factors, early warning signs and the importance of appropriate screening and timely medical consultation.\n\nThrough an engaging presentation supported by educational visuals, the session encouraged participants to take a proactive approach to their health and share this knowledge within their families and communities.\n\nThe initiative reflected the organisation's continued commitment to employee well-being, preventive healthcare education and spreading awareness beyond the hospital setting.",
+  "photos": [
+    "images/kuwait-flour-mills-2026/01.jpg",
+    "images/kuwait-flour-mills-2026/02.jpg",
+    "images/kuwait-flour-mills-2026/03.jpg",
+    "images/kuwait-flour-mills-2026/04.jpg",
+    "images/kuwait-flour-mills-2026/05.jpg"
+  ]
+}
