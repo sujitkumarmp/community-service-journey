@@ -324,7 +324,7 @@ async function loadEvents() {
       if (photos.length) {
         const thumbnail = document.createElement("img");
         thumbnail.className = "thumbnail";
-        thumbnail.src = photos[0];
+        thumbnail.src = event.image || photos[0];
         thumbnail.alt = event.title || "Event photograph";
         thumbnail.loading = "lazy";
         photoColumn.append(thumbnail);
