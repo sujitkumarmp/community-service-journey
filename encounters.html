@@ -1,1 +1,572 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Distinguished Encounters | A Journey of Community Service</title>
+<style>
+:root {
+  --navy:#14263d;
+  --gold:#b98b4a;
+  --cream:#faf8f4;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--cream);
+  color:var(--navy);
+  font-family:Arial,sans-serif;
+}
+header {
+  background:var(--navy);
+  color:white;
+  padding:50px 20px;
+  text-align:center;
+}
+h1,h2 { font-family:Georgia,serif; }
+h1 { font-size:clamp(28px,4vw,42px); }
+header p { color:#e3c08c; }
+main {
+  max-width:1050px;
+  margin:40px auto;
+  padding:0 20px;
+}
+.back {
+  color:#926629;
+  text-decoration:none;
+}
+.event {
+  background:white;
+  border:1px solid #e8dfd3;
+  border-radius:12px;
+  margin:24px 0;
+  overflow:hidden;
+  box-shadow:0 8px 24px #14263d0a;
+}
+.event-overview {
+  display:grid;
+  grid-template-columns:230px 1fr;
+  gap:24px;
+  padding:24px;
+}
+.thumbnail {
+  width:100%;
+  height:190px;
+  object-fit:cover;
+  border-radius:8px;
+}
+.thumbnail-placeholder {
+  height:190px;
+  border-radius:8px;
+  background:#f0e9df;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#987b59;
+  font-size:13px;
+  text-align:center;
+  padding:15px;
+}
+.date {
+  color:#926629;
+  font-size:13px;
+}
+.event h2 {
+  margin:10px 0;
+  font-size:24px;
+}
+.summary {
+  line-height:1.7;
+  margin:10px 0;
+}
+.organizer {
+  font-size:13px;
+  color:#596374;
+  line-height:1.6;
+}
+.details-button {
+  margin-top:10px;
+  padding:11px 18px;
+  background:var(--navy);
+  color:white;
+  border:0;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:14px;
+}
+.details-button:hover {
+  background:#294665;
+}
+.details-button:focus-visible,
+.photo-link:focus-visible {
+  outline:3px solid var(--gold);
+  outline-offset:3px;
+}
+.details {
+  border-top:1px solid #eee5d9;
+  padding:24px;
+}
+.details[hidden] { display:none; }
+.details p {
+  line-height:1.8;
+  margin:0 0 15px;
+}
+.photos {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:12px;
+  margin-top:20px;
+}
+.photos img {
+  width:100%;
+  height:170px;
+  object-fit:cover;
+  border-radius:8px;
+  cursor:pointer;
+}
+.photos img:hover { opacity:.9; }
+
+/* Full-screen photo and video viewer */
+.photos .video-tile { position:relative; display:block; border:0; padding:0; background:#14263d; border-radius:8px; overflow:hidden; cursor:pointer; min-height:170px; color:white; font-size:17px; }
+.photos .video-tile::before { content:"▶"; display:block; font-size:38px; margin-bottom:8px; }
+.photos .video-tile:hover { background:#294665; }
+.lightbox-video { display:block; max-width:100%; max-height:calc(100vh - 160px); width:auto; border-radius:5px; }
+.lightbox-video[hidden], .lightbox-image[hidden] { display:none; }
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(8, 17, 31, 0.96);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 65px 60px;
+  color: white;
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: calc(100vh - 160px);
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.lightbox-close {
+  top: 16px;
+  right: 20px;
+}
+
+.lightbox-prev {
+  left: 12px;
+  top: 50%;
+}
+
+.lightbox-next {
+  right: 12px;
+  top: 50%;
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 22px;
+  text-align: center;
+  font-size: 14px;
+  color: #e3c08c;
+}
+
+.lightbox button:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+@media(max-width:650px) {
+  .lightbox {
+    padding: 65px 45px;
+  }
+  .lightbox-prev {
+    left: 3px;
+  }
+  .lightbox-next {
+    right: 3px;
+  }
+}
+
+  
+footer {
+  text-align:center;
+  background:var(--navy);
+  color:white;
+  padding:22px;
+  margin-top:60px;
+  font-size:12px;
+}
+@media(max-width:650px) {
+  .event-overview {
+    grid-template-columns:1fr;
+    gap:16px;
+    padding:18px;
+  }
+  .thumbnail,.thumbnail-placeholder {
+    height:220px;
+  }
+  .details { padding:18px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Distinguished Encounters</h1>
+<p>Meaningful Connections. Memorable Encounters.</p>
+</header>
+
+<main>
+  <a class="back" href="index.html">← Back to Home</a>
+  <div id="events" aria-live="polite">
+    <p>Loading events...</p>
+  </div>
+</main>
+
+<footer>A Journey of Community Service</footer>
+
+ 
+<!-- Full-screen Event Photo Viewer -->
+<div id="lightbox" class="lightbox"
+     role="dialog"
+     aria-modal="true"
+     aria-label="Event photo and video viewer"
+     hidden>
+
+  <button id="lightboxClose"
+          class="lightbox-close"
+          aria-label="Close media viewer">×</button>
+
+  <button id="lightboxPrev"
+          class="lightbox-prev"
+          aria-label="Previous item">‹</button>
+
+  <img id="lightboxImage"
+       class="lightbox-image"
+       alt="Event photograph">
+  <video id="lightboxVideo" class="lightbox-video" controls playsinline preload="metadata" hidden></video>
+
+  <button id="lightboxNext"
+          class="lightbox-next"
+          aria-label="Next item">›</button>
+
+  <div id="lightboxCounter"
+       class="lightbox-counter"></div>
+</div>
+
+
+<script>
+async function loadEvents() {
+  const container = document.getElementById("events");
+
+  try {
+    const response = await fetch("data/encounters.json", {
+      cache: "no-cache"
+    });
+
+    if (!response.ok) {
+      throw new Error("Unable to load events");
+    }
+
+    const events = await response.json();
+
+    if (!Array.isArray(events)) {
+      throw new Error("Invalid event data");
+    }
+
+    events.sort((a,b) =>
+      String(b.date).localeCompare(String(a.date))
+    );
+
+    container.replaceChildren();
+
+    if (!events.length) {
+      container.textContent = "No events available yet.";
+      return;
+    }
+
+    for (const event of events) {
+      const article = document.createElement("article");
+      article.className = "event";
+
+      const overview = document.createElement("div");
+      overview.className = "event-overview";
+
+      const photoColumn = document.createElement("div");
+      const photos = Array.isArray(event.photos)
+        ? event.photos.filter(p => typeof p === "string" && p.trim())
+        : [];
+
+      if (photos.length) {
+        const thumbnail = document.createElement("img");
+        thumbnail.className = "thumbnail";
+        thumbnail.src = photos[0];
+        thumbnail.alt = event.title || "Event photograph";
+        thumbnail.loading = "lazy";
+        photoColumn.append(thumbnail);
+      } else {
+        const placeholder = document.createElement("div");
+        placeholder.className = "thumbnail-placeholder";
+        placeholder.textContent = "Event photographs coming soon";
+        photoColumn.append(placeholder);
+      }
+
+      const content = document.createElement("div");
+
+      const date = document.createElement("div");
+      date.className = "date";
+      const parsedDate = new Date(event.date + "T12:00:00");
+      date.textContent = Number.isNaN(parsedDate.getTime())
+        ? (event.date || "")
+        : parsedDate.toLocaleDateString("en-GB", {
+            day:"numeric",
+            month:"long",
+            year:"numeric"
+          });
+
+      const title = document.createElement("h2");
+      title.textContent = event.title || "Untitled event";
+
+      const summary = document.createElement("p");
+      summary.className = "summary";
+      summary.textContent = event.summary ||
+        event.description || "";
+
+      content.append(date,title,summary);
+
+      if (event.organizer) {
+        const organizer = document.createElement("p");
+        organizer.className = "organizer";
+        organizer.textContent = "Organised by: " + event.organizer;
+        content.append(organizer);
+      }
+
+      const details = document.createElement("div");
+      details.className = "details";
+      details.hidden = true;
+      const detailsId = "details-" +
+        String(event.id || Math.random())
+          .replace(/[^a-zA-Z0-9_-]/g,"");
+      details.id = detailsId;
+
+      if (event.venue) {
+        const venue = document.createElement("p");
+        venue.textContent = "Venue: " + event.venue;
+        details.append(venue);
+      }
+
+      const paragraphs = String(event.description || "")
+        .split(/\n\s*\n/)
+        .filter(Boolean);
+
+      for (const paragraph of paragraphs) {
+        const p = document.createElement("p");
+        p.textContent = paragraph;
+        details.append(p);
+      }
+
+      const media = photos.map(src => ({type:"image", src}));
+      if (typeof event.video === "string" && event.video.trim()) {
+        media.push({type:"video", src:event.video.trim()});
+      }
+
+      if (media.length) {
+        const gallery = document.createElement("div");
+        gallery.className = "photos";
+
+        photos.forEach((photo,index) => {
+          const link = document.createElement("a");
+          link.className = "photo-link";
+          link.href = photo;
+link.addEventListener("click", (e) => {
+  e.preventDefault();
+  openLightbox(media, index);
+});
+          link.setAttribute("aria-label",
+            "Open photograph " + (index + 1) +
+            " from " + (event.title || "event")
+          );
+
+          const image = document.createElement("img");
+          image.src = photo;
+          image.alt = (event.title || "Event") +
+            " – photograph " + (index + 1);
+          image.loading = "lazy";
+
+          link.append(image);
+          gallery.append(link);
+        });
+
+        if (media.some(item => item.type === "video")) {
+          const videoTile = document.createElement("button");
+          videoTile.type = "button";
+          videoTile.className = "video-tile";
+          videoTile.textContent = "Watch event video";
+          videoTile.setAttribute("aria-label", "Watch video from " + (event.title || "event"));
+          videoTile.addEventListener("click", () => openLightbox(media, media.length - 1));
+          gallery.append(videoTile);
+        }
+        details.append(gallery);
+      }
+
+      const button = document.createElement("button");
+      button.className = "details-button";
+      button.type = "button";
+      button.textContent = "View Details";
+      button.setAttribute("aria-expanded","false");
+      button.setAttribute("aria-controls",detailsId);
+
+      button.addEventListener("click",() => {
+        details.hidden = !details.hidden;
+        const expanded = !details.hidden;
+        button.textContent = expanded
+          ? "Hide Details" : "View Details";
+        button.setAttribute("aria-expanded",String(expanded));
+      });
+
+      content.append(button);
+      overview.append(photoColumn,content);
+      article.append(overview,details);
+      container.append(article);
+    }
+  } catch(error) {
+    container.textContent =
+      "The collection could not be loaded. Please try again.";
+  }
+}
+
+let activeMedia = [];
+let activeIndex = 0;
+let previousFocus = null;
+
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightboxImage");
+const lightboxVideo = document.getElementById("lightboxVideo");
+const lightboxCounter = document.getElementById("lightboxCounter");
+
+function stopVideo() {
+  lightboxVideo.pause();
+  lightboxVideo.removeAttribute("src");
+  lightboxVideo.load();
+}
+
+function showLightboxMedia() {
+  const item = activeMedia[activeIndex];
+  stopVideo();
+  lightboxImage.removeAttribute("src");
+  lightboxImage.hidden = item.type !== "image";
+  lightboxVideo.hidden = item.type !== "video";
+  if (item.type === "video") {
+    lightboxVideo.src = item.src;
+    lightboxVideo.load();
+  } else {
+    lightboxImage.src = item.src;
+  }
+  lightboxCounter.textContent =
+    (activeIndex + 1) + " / " + activeMedia.length +
+    (item.type === "video" ? " · Video" : " · Photo");
+}
+
+function openLightbox(media, index) {
+  previousFocus = document.activeElement;
+  activeMedia = media;
+  activeIndex = index;
+  showLightboxMedia();
+  lightbox.hidden = false;
+  document.body.style.overflow = "hidden";
+  document.getElementById("lightboxClose").focus();
+}
+
+function closeLightbox() {
+  lightbox.hidden = true;
+  stopVideo();
+  lightboxImage.removeAttribute("src");
+  document.body.style.overflow = "";
+  if (previousFocus) previousFocus.focus();
+}
+
+function moveLightbox(step) {
+  activeIndex = (activeIndex + step + activeMedia.length) % activeMedia.length;
+  showLightboxMedia();
+}
+
+document.getElementById("lightboxClose")
+  .addEventListener("click", closeLightbox);
+
+document.getElementById("lightboxPrev")
+  .addEventListener("click", () => moveLightbox(-1));
+
+document.getElementById("lightboxNext")
+  .addEventListener("click", () => moveLightbox(1));
+
+document.addEventListener("keydown", (e) => {
+  if (lightbox.hidden) return;
+
+  if (e.key === "Escape") closeLightbox();
+  if (e.target !== lightboxVideo) {
+    if (e.key === "ArrowLeft") moveLightbox(-1);
+    if (e.key === "ArrowRight") moveLightbox(1);
+  }
+
+  if (e.key === "Tab") {
+    const controls = [
+      document.getElementById("lightboxClose"),
+      document.getElementById("lightboxPrev"),
+      ...(lightboxVideo.hidden ? [] : [lightboxVideo]),
+      document.getElementById("lightboxNext")
+    ];
+    const current = controls.indexOf(document.activeElement);
+    if (e.shiftKey && current === 0) {
+      e.preventDefault();
+      controls[controls.length - 1].focus();
+    } else if (!e.shiftKey && current === controls.length - 1) {
+      e.preventDefault();
+      controls[0].focus();
+    }
+  }
+});
+
+let touchStartX = 0;
+
+lightbox.addEventListener("touchstart", (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+}, {passive:true});
+
+lightbox.addEventListener("touchend", (e) => {
+  const difference =
+    e.changedTouches[0].screenX - touchStartX;
+
+  if (!lightboxVideo.hidden) return;
+  if (Math.abs(difference) > 50) {
+    moveLightbox(difference < 0 ? 1 : -1);
+  }
+}, {passive:true});
+
+loadEvents();
+</script>
+</body>
+</html>
