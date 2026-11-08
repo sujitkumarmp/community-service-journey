@@ -127,7 +127,13 @@ main {
 }
 .photos img:hover { opacity:.9; }
 
-/* Full-screen photo viewer */
+/* Full-screen photo and video viewer */
+.photos .video-tile { position:relative; display:block; border:0; padding:0; background:#14263d; border-radius:8px; overflow:hidden; cursor:pointer; min-height:170px; color:white; font-size:17px; }
+.photos .video-tile::before { content:"▶"; display:block; font-size:38px; margin-bottom:8px; }
+.photos .video-tile:hover { background:#294665; }
+.lightbox-video { display:block; max-width:100%; max-height:calc(100vh - 160px); width:auto; border-radius:5px; }
+.lightbox-video[hidden], .lightbox-image[hidden] { display:none; }
+
 .lightbox {
   position: fixed;
   inset: 0;
@@ -248,24 +254,25 @@ footer {
 <div id="lightbox" class="lightbox"
      role="dialog"
      aria-modal="true"
-     aria-label="Event photo viewer"
+     aria-label="Event photo and video viewer"
      hidden>
 
   <button id="lightboxClose"
           class="lightbox-close"
-          aria-label="Close photo viewer">×</button>
+          aria-label="Close media viewer">×</button>
 
   <button id="lightboxPrev"
           class="lightbox-prev"
-          aria-label="Previous photograph">‹</button>
+          aria-label="Previous item">‹</button>
 
   <img id="lightboxImage"
        class="lightbox-image"
        alt="Event photograph">
+  <video id="lightboxVideo" class="lightbox-video" controls playsinline preload="metadata" hidden></video>
 
   <button id="lightboxNext"
           class="lightbox-next"
-          aria-label="Next photograph">›</button>
+          aria-label="Next item">›</button>
 
   <div id="lightboxCounter"
        class="lightbox-counter"></div>
@@ -382,7 +389,12 @@ async function loadEvents() {
         details.append(p);
       }
 
-      if (photos.length) {
+      const media = photos.map(src => ({type:"image", src}));
+      if (typeof event.video === "string" && event.video.trim()) {
+        media.push({type:"video", src:event.video.trim()});
+      }
+
+      if (media.length) {
         const gallery = document.createElement("div");
         gallery.className = "photos";
 
@@ -392,7 +404,7 @@ async function loadEvents() {
           link.href = photo;
 link.addEventListener("click", (e) => {
   e.preventDefault();
-  openLightbox(photos, index);
+  openLightbox(media, index);
 });
           link.setAttribute("aria-label",
             "Open photograph " + (index + 1) +
@@ -409,6 +421,15 @@ link.addEventListener("click", (e) => {
           gallery.append(link);
         });
 
+        if (media.some(item => item.type === "video")) {
+          const videoTile = document.createElement("button");
+          videoTile.type = "button";
+          videoTile.className = "video-tile";
+          videoTile.textContent = "Watch event video";
+          videoTile.setAttribute("aria-label", "Watch video from " + (event.title || "event"));
+          videoTile.addEventListener("click", () => openLightbox(media, media.length - 1));
+          gallery.append(videoTile);
+        }
         details.append(gallery);
       }
 
@@ -438,25 +459,43 @@ link.addEventListener("click", (e) => {
   }
 }
 
-let activePhotos = [];
+let activeMedia = [];
 let activeIndex = 0;
 let previousFocus = null;
 
 const lightbox = document.getElementById("lightbox");
 const lightboxImage = document.getElementById("lightboxImage");
+const lightboxVideo = document.getElementById("lightboxVideo");
 const lightboxCounter = document.getElementById("lightboxCounter");
 
-function showLightboxPhoto() {
-  lightboxImage.src = activePhotos[activeIndex];
-  lightboxCounter.textContent =
-    (activeIndex + 1) + " / " + activePhotos.length;
+function stopVideo() {
+  lightboxVideo.pause();
+  lightboxVideo.removeAttribute("src");
+  lightboxVideo.load();
 }
 
-function openLightbox(photos, index) {
+function showLightboxMedia() {
+  const item = activeMedia[activeIndex];
+  stopVideo();
+  lightboxImage.removeAttribute("src");
+  lightboxImage.hidden = item.type !== "image";
+  lightboxVideo.hidden = item.type !== "video";
+  if (item.type === "video") {
+    lightboxVideo.src = item.src;
+    lightboxVideo.load();
+  } else {
+    lightboxImage.src = item.src;
+  }
+  lightboxCounter.textContent =
+    (activeIndex + 1) + " / " + activeMedia.length +
+    (item.type === "video" ? " · Video" : " · Photo");
+}
+
+function openLightbox(media, index) {
   previousFocus = document.activeElement;
-  activePhotos = photos;
+  activeMedia = media;
   activeIndex = index;
-  showLightboxPhoto();
+  showLightboxMedia();
   lightbox.hidden = false;
   document.body.style.overflow = "hidden";
   document.getElementById("lightboxClose").focus();
@@ -464,16 +503,15 @@ function openLightbox(photos, index) {
 
 function closeLightbox() {
   lightbox.hidden = true;
+  stopVideo();
   lightboxImage.removeAttribute("src");
   document.body.style.overflow = "";
   if (previousFocus) previousFocus.focus();
 }
 
 function moveLightbox(step) {
-  activeIndex =
-    (activeIndex + step + activePhotos.length) %
-    activePhotos.length;
-  showLightboxPhoto();
+  activeIndex = (activeIndex + step + activeMedia.length) % activeMedia.length;
+  showLightboxMedia();
 }
 
 document.getElementById("lightboxClose")
@@ -489,20 +527,23 @@ document.addEventListener("keydown", (e) => {
   if (lightbox.hidden) return;
 
   if (e.key === "Escape") closeLightbox();
-  if (e.key === "ArrowLeft") moveLightbox(-1);
-  if (e.key === "ArrowRight") moveLightbox(1);
+  if (e.target !== lightboxVideo) {
+    if (e.key === "ArrowLeft") moveLightbox(-1);
+    if (e.key === "ArrowRight") moveLightbox(1);
+  }
 
   if (e.key === "Tab") {
     const controls = [
       document.getElementById("lightboxClose"),
       document.getElementById("lightboxPrev"),
+      ...(lightboxVideo.hidden ? [] : [lightboxVideo]),
       document.getElementById("lightboxNext")
     ];
     const current = controls.indexOf(document.activeElement);
     if (e.shiftKey && current === 0) {
       e.preventDefault();
-      controls[2].focus();
-    } else if (!e.shiftKey && current === 2) {
+      controls[controls.length - 1].focus();
+    } else if (!e.shiftKey && current === controls.length - 1) {
       e.preventDefault();
       controls[0].focus();
     }
@@ -519,6 +560,7 @@ lightbox.addEventListener("touchend", (e) => {
   const difference =
     e.changedTouches[0].screenX - touchStartX;
 
+  if (!lightboxVideo.hidden) return;
   if (Math.abs(difference) > 50) {
     moveLightbox(difference < 0 ? 1 : -1);
   }
