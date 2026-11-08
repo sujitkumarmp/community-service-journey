@@ -16,13 +16,31 @@
   "images/kidzania-2026/04.jpg",
   "images/kidzania-2026/05.jpg",
   "images/kidzania-2026/06.jpg",
+  
   "images/kidzania-2026/07.jpg"
 ]
-
   },
-  
-{
-  "id": "kuwait-flour-mills-2026",
+  {
+    "id": "pinoy-arabia-2026",
+    "title": "Pinoy Arabia – Fight With Might, Shine Your Light",
+    "date": "2026-10-16",
+    "organizer": "Pinoy Arabia, in collaboration with Kabayan Cancer Support Group",
+    "venue": "Park Avenues Hotel, Kuwait City",
+    "summary": "A meaningful cancer awareness forum held during Pinoy Arabia's 12th Anniversary Barrio Fiesta 2026, promoting early detection, preventive healthcare and community support. The celebrations were graced by H.E. Jose Cabrera III, Philippine Ambassador to Kuwait.",
+    "description": "As part of its 12th Anniversary Barrio Fiesta celebrations, Pinoy Arabia hosted 'Fight With Might, Shine Your Light', a dedicated cancer awareness forum in collaboration with the Kabayan Cancer Support Group.\n\nThe session, 'Life is Precious — Let's Take Care of It', highlighted the importance of cancer awareness, timely medical attention, early detection and informed healthcare decisions.\n\nThe occasion was further distinguished by the presence of H.E. Jose Cabrera III, Philippine Ambassador to Kuwait, who addressed the gathering during the opening celebrations.\n\nBringing together community members, cancer support advocates and healthcare professionals, the initiative reflected the importance of collective efforts in spreading awareness, supporting those affected by cancer and empowering individuals through knowledge.",
+    "photos": [
+      "images/pinoy-arabia-2026/01.jpg",
+      "images/pinoy-arabia-2026/02.jpg",
+      "images/pinoy-arabia-2026/03.jpg",
+      "images/pinoy-arabia-2026/04.jpg",
+      "images/pinoy-arabia-2026/05.jpg",
+      "images/pinoy-arabia-2026/06.jpg"
+    ],
+    "video": "images/pinoy-arabia-2026/video.mp4"
+  },
+  {
+    "id": "kuwait-flour-mills-2026",
+
   "title": "Empowering Through Awareness – Kuwait Flour Mills",
   "date": "2026-10-15",
   "organizer": "Marketing Department – Public Relations Unit, Kuwait Flour Mills & Bakeries Co.",
