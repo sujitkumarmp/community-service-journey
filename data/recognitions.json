@@ -1,6 +1,23 @@
 
 [
   {
+    "id": "pda-medical-excellence-2026",
+    "title": "Medical Excellence Award – PDA Silver Jubilee, Rajatha Pournami 2026",
+    "date": "2026-02-13",
+    "organizer": "Pathanamthitta District Association (PDA), Kuwait",
+    "venue": "Central School Auditorium, Abbassiya, Kuwait",
+    "summary": "Honoured with the Medical Excellence Award during Rajatha Pournami 2026, the Silver Jubilee celebrations of the Pathanamthitta District Association, Kuwait, recognising distinguished contributions to the medical profession and community service.",
+    "description": "The Pathanamthitta District Association (PDA), Kuwait, celebrated its Silver Jubilee through Rajatha Pournami 2026 on 13 February 2026 at the Central School Auditorium, Abbassiya, commemorating 25 years of community engagement, cultural heritage and collective achievement.\n\nAs part of the celebrations, the association presented its prestigious Excellence Awards, recognising individuals who have made meaningful contributions across various professional and social fields.\n\nThe Medical Excellence Award was conferred in recognition of outstanding contributions to healthcare, professional dedication and commitment to the well-being of the community.\n\nThe celebrations featured distinguished guests, including H.E. Paramita Tripathi, Ambassador of India to Kuwait; Mrs. Veena George, Kerala's Health Minister; and Mr. Anto Antony, Member of Parliament.\n\nA cherished recognition that reflects the importance of professional excellence, compassionate healthcare and sustained service to society.",
+    "photos": [
+      "images/pda-medical-excellence-2026/01.jpg",
+      "images/pda-medical-excellence-2026/02.jpg",
+      "images/pda-medical-excellence-2026/03.jpg",
+      "images/pda-medical-excellence-2026/04.jpg",
+      "images/pda-medical-excellence-2026/05.jpg",
+      "images/pda-medical-excellence-2026/06.jpg"
+    ]
+  },
+  {
     "id": "ibpc-recognition-2025",
     "title": "IBPC Kuwait – Recognition for Outstanding Community Service",
     "date": "2025-11-12",
@@ -29,6 +46,6 @@
       "images/ibpc-recognition-2025/18.jpg",
       "images/ibpc-recognition-2025/19.jpg"
     ],
-"video": "images/ibpc-recognition-2025/video.mp4"
+    "video": "images/ibpc-recognition-2025/video.mp4"
   }
 ]
