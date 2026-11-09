@@ -411,7 +411,29 @@ link.addEventListener("click", (e) => {
 
         details.append(gallery);
       }
+      
+      // Display event video when available
+      if (typeof event.video === "string" && event.video.trim()) {
+        const videoGallery = document.createElement("div");
+        videoGallery.className = "photos";
 
+        const video = document.createElement("video");
+        video.src = event.video;
+        video.controls = true;
+        video.preload = "metadata";
+        video.playsInline = true;
+        video.style.width = "100%";
+        video.style.height = "170px";
+        video.style.objectFit = "contain";
+        video.style.background = "#14263d";
+        video.style.borderRadius = "8px";
+
+        videoGallery.append(video);
+        details.append(videoGallery);
+      }
+
+
+      
       const button = document.createElement("button");
       button.className = "details-button";
       button.type = "button";
