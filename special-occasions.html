@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Special Occasions | A Journey of Community Service</title>
+
 <style>
 :root {
   --navy:#14263d;
@@ -95,11 +96,10 @@ main {
   cursor:pointer;
   font-size:14px;
 }
-.details-button:hover {
-  background:#294665;
-}
+.details-button:hover { background:#294665; }
 .details-button:focus-visible,
-.photo-link:focus-visible {
+.photo-link:focus-visible,
+.video-tile:focus-visible {
   outline:3px solid var(--gold);
   outline-offset:3px;
 }
@@ -127,85 +127,92 @@ main {
 }
 .photos img:hover { opacity:.9; }
 
-/* Full-screen photo viewer */
+/* Video tile: same implementation as Awareness */
+.photos .video-tile {
+  position:relative;
+  display:block;
+  border:0;
+  padding:0;
+  background:#14263d;
+  border-radius:8px;
+  overflow:hidden;
+  cursor:pointer;
+  min-height:170px;
+  color:white;
+  font-size:17px;
+}
+.photos .video-tile::before {
+  content:"▶";
+  display:block;
+  font-size:38px;
+  margin-bottom:8px;
+}
+.photos .video-tile:hover { background:#294665; }
+
+/* Full-screen photo and video viewer */
 .lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(8, 17, 31, 0.96);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 65px 60px;
-  color: white;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(8,17,31,0.96);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:65px 60px;
+  color:white;
 }
-
-.lightbox[hidden] {
-  display: none;
-}
-
+.lightbox[hidden] { display:none; }
 .lightbox-image {
-  max-width: 100%;
-  max-height: calc(100vh - 160px);
-  object-fit: contain;
-  border-radius: 5px;
+  max-width:100%;
+  max-height:calc(100vh - 160px);
+  object-fit:contain;
+  border-radius:5px;
 }
-
+.lightbox-video {
+  display:block;
+  max-width:100%;
+  max-height:calc(100vh - 160px);
+  width:auto;
+  border-radius:5px;
+}
+.lightbox-video[hidden],
+.lightbox-image[hidden] { display:none; }
 .lightbox-close,
 .lightbox-prev,
 .lightbox-next {
-  position: absolute;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.25);
-  color: white;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  font-size: 25px;
-  cursor: pointer;
+  position:absolute;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.25);
+  color:white;
+  border-radius:50%;
+  width:44px;
+  height:44px;
+  font-size:25px;
+  cursor:pointer;
 }
-
 .lightbox-close {
-  top: 16px;
-  right: 20px;
+  top:16px;
+  right:20px;
 }
-
 .lightbox-prev {
-  left: 12px;
-  top: 50%;
+  left:12px;
+  top:50%;
 }
-
 .lightbox-next {
-  right: 12px;
-  top: 50%;
+  right:12px;
+  top:50%;
 }
-
 .lightbox-counter {
-  position: absolute;
-  bottom: 22px;
-  text-align: center;
-  font-size: 14px;
-  color: #e3c08c;
+  position:absolute;
+  bottom:22px;
+  text-align:center;
+  font-size:14px;
+  color:#e3c08c;
 }
-
 .lightbox button:hover {
-  background: rgba(255,255,255,0.25);
+  background:rgba(255,255,255,0.25);
 }
-
-@media(max-width:650px) {
-  .lightbox {
-    padding: 65px 45px;
-  }
-  .lightbox-prev {
-    left: 3px;
-  }
-  .lightbox-next {
-    right: 3px;
-  }
-}
-
-  
 footer {
   text-align:center;
   background:var(--navy);
@@ -215,22 +222,23 @@ footer {
   font-size:12px;
 }
 @media(max-width:650px) {
+  .lightbox { padding:65px 45px; }
+  .lightbox-prev { left:3px; }
+  .lightbox-next { right:3px; }
   .event-overview {
     grid-template-columns:1fr;
     gap:16px;
     padding:18px;
   }
-  .thumbnail,.thumbnail-placeholder {
-    height:220px;
-  }
+  .thumbnail,.thumbnail-placeholder { height:220px; }
   .details { padding:18px; }
 }
 </style>
 </head>
-<body>
 
+<body>
 <header>
-  <h1>Awareness & Education</h1>
+  <h1>Special Occasions</h1>
   <p>Celebrating Moments of Service, Leadership and Community.</p>
 </header>
 
@@ -243,34 +251,40 @@ footer {
 
 <footer>A Journey of Community Service</footer>
 
- 
-<!-- Full-screen Event Photo Viewer -->
-<div id="lightbox" class="lightbox"
+<!-- Full-screen photo and video viewer -->
+<div id="lightbox"
+     class="lightbox"
      role="dialog"
      aria-modal="true"
-     aria-label="Event photo viewer"
+     aria-label="Event photo and video viewer"
      hidden>
 
   <button id="lightboxClose"
           class="lightbox-close"
-          aria-label="Close photo viewer">×</button>
+          aria-label="Close media viewer">×</button>
 
   <button id="lightboxPrev"
           class="lightbox-prev"
-          aria-label="Previous photograph">‹</button>
+          aria-label="Previous item">‹</button>
 
   <img id="lightboxImage"
        class="lightbox-image"
        alt="Event photograph">
 
+  <video id="lightboxVideo"
+         class="lightbox-video"
+         controls
+         playsinline
+         preload="metadata"
+         hidden></video>
+
   <button id="lightboxNext"
           class="lightbox-next"
-          aria-label="Next photograph">›</button>
+          aria-label="Next item">›</button>
 
   <div id="lightboxCounter"
        class="lightbox-counter"></div>
 </div>
-
 
 <script>
 async function loadEvents() {
@@ -278,7 +292,7 @@ async function loadEvents() {
 
   try {
     const response = await fetch("data/special-occasions.json", {
-      cache: "no-cache"
+      cache:"no-cache"
     });
 
     if (!response.ok) {
@@ -310,8 +324,10 @@ async function loadEvents() {
       overview.className = "event-overview";
 
       const photoColumn = document.createElement("div");
+
       const photos = Array.isArray(event.photos)
-        ? event.photos.filter(p => typeof p === "string" && p.trim())
+        ? event.photos.filter(p =>
+            typeof p === "string" && p.trim())
         : [];
 
       if (photos.length) {
@@ -346,8 +362,8 @@ async function loadEvents() {
 
       const summary = document.createElement("p");
       summary.className = "summary";
-      summary.textContent = event.summary ||
-        event.description || "";
+      summary.textContent =
+        event.summary || event.description || "";
 
       content.append(date,title,summary);
 
@@ -361,6 +377,7 @@ async function loadEvents() {
       const details = document.createElement("div");
       details.className = "details";
       details.hidden = true;
+
       const detailsId = "details-" +
         String(event.id || Math.random())
           .replace(/[^a-zA-Z0-9_-]/g,"");
@@ -382,7 +399,20 @@ async function loadEvents() {
         details.append(p);
       }
 
-      if (photos.length) {
+      // Combine photographs and video into one gallery
+      const media = photos.map(src => ({
+        type:"image",
+        src
+      }));
+
+      if (typeof event.video === "string" && event.video.trim()) {
+        media.push({
+          type:"video",
+          src:event.video.trim()
+        });
+      }
+
+      if (media.length) {
         const gallery = document.createElement("div");
         gallery.className = "photos";
 
@@ -390,11 +420,14 @@ async function loadEvents() {
           const link = document.createElement("a");
           link.className = "photo-link";
           link.href = photo;
-link.addEventListener("click", (e) => {
-  e.preventDefault();
-  openLightbox(photos, index);
-});
-          link.setAttribute("aria-label",
+
+          link.addEventListener("click", e => {
+            e.preventDefault();
+            openLightbox(media,index);
+          });
+
+          link.setAttribute(
+            "aria-label",
             "Open photograph " + (index + 1) +
             " from " + (event.title || "event")
           );
@@ -409,31 +442,28 @@ link.addEventListener("click", (e) => {
           gallery.append(link);
         });
 
+        // Video appears after the photographs
+        if (media.some(item => item.type === "video")) {
+          const videoTile = document.createElement("button");
+          videoTile.type = "button";
+          videoTile.className = "video-tile";
+          videoTile.textContent = "Watch event video";
+
+          videoTile.setAttribute(
+            "aria-label",
+            "Watch video from " + (event.title || "event")
+          );
+
+          videoTile.addEventListener("click", () =>
+            openLightbox(media,media.length - 1)
+          );
+
+          gallery.append(videoTile);
+        }
+
         details.append(gallery);
       }
-      
-      // Display event video when available
-      if (typeof event.video === "string" && event.video.trim()) {
-        const videoGallery = document.createElement("div");
-        videoGallery.className = "photos";
 
-        const video = document.createElement("video");
-        video.src = event.video;
-        video.controls = true;
-        video.preload = "metadata";
-        video.playsInline = true;
-        video.style.width = "100%";
-        video.style.height = "170px";
-        video.style.objectFit = "contain";
-        video.style.background = "#14263d";
-        video.style.borderRadius = "8px";
-
-        videoGallery.append(video);
-        details.append(videoGallery);
-      }
-
-
-      
       const button = document.createElement("button");
       button.className = "details-button";
       button.type = "button";
@@ -441,12 +471,18 @@ link.addEventListener("click", (e) => {
       button.setAttribute("aria-expanded","false");
       button.setAttribute("aria-controls",detailsId);
 
-      button.addEventListener("click",() => {
+      button.addEventListener("click", () => {
         details.hidden = !details.hidden;
         const expanded = !details.hidden;
+
         button.textContent = expanded
-          ? "Hide Details" : "View Details";
-        button.setAttribute("aria-expanded",String(expanded));
+          ? "Hide Details"
+          : "View Details";
+
+        button.setAttribute(
+          "aria-expanded",
+          String(expanded)
+        );
       });
 
       content.append(button);
@@ -455,76 +491,113 @@ link.addEventListener("click", (e) => {
       container.append(article);
     }
   } catch(error) {
+    console.error(error);
     container.textContent =
       "The collection could not be loaded. Please try again.";
   }
 }
 
-let activePhotos = [];
+let activeMedia = [];
 let activeIndex = 0;
 let previousFocus = null;
 
 const lightbox = document.getElementById("lightbox");
 const lightboxImage = document.getElementById("lightboxImage");
+const lightboxVideo = document.getElementById("lightboxVideo");
 const lightboxCounter = document.getElementById("lightboxCounter");
 
-function showLightboxPhoto() {
-  lightboxImage.src = activePhotos[activeIndex];
-  lightboxCounter.textContent =
-    (activeIndex + 1) + " / " + activePhotos.length;
+function stopVideo() {
+  lightboxVideo.pause();
+  lightboxVideo.removeAttribute("src");
+  lightboxVideo.load();
 }
 
-function openLightbox(photos, index) {
+function showLightboxMedia() {
+  const item = activeMedia[activeIndex];
+
+  stopVideo();
+  lightboxImage.removeAttribute("src");
+
+  lightboxImage.hidden = item.type !== "image";
+  lightboxVideo.hidden = item.type !== "video";
+
+  if (item.type === "video") {
+    lightboxVideo.src = item.src;
+    lightboxVideo.load();
+  } else {
+    lightboxImage.src = item.src;
+  }
+
+  lightboxCounter.textContent =
+    (activeIndex + 1) + " / " + activeMedia.length +
+    (item.type === "video" ? " · Video" : " · Photo");
+}
+
+function openLightbox(media,index) {
   previousFocus = document.activeElement;
-  activePhotos = photos;
+  activeMedia = media;
   activeIndex = index;
-  showLightboxPhoto();
+
+  showLightboxMedia();
   lightbox.hidden = false;
   document.body.style.overflow = "hidden";
+
   document.getElementById("lightboxClose").focus();
 }
 
 function closeLightbox() {
   lightbox.hidden = true;
+  stopVideo();
   lightboxImage.removeAttribute("src");
   document.body.style.overflow = "";
+
   if (previousFocus) previousFocus.focus();
 }
 
 function moveLightbox(step) {
   activeIndex =
-    (activeIndex + step + activePhotos.length) %
-    activePhotos.length;
-  showLightboxPhoto();
+    (activeIndex + step + activeMedia.length) %
+    activeMedia.length;
+
+  showLightboxMedia();
 }
 
 document.getElementById("lightboxClose")
-  .addEventListener("click", closeLightbox);
+  .addEventListener("click",closeLightbox);
 
 document.getElementById("lightboxPrev")
-  .addEventListener("click", () => moveLightbox(-1));
+  .addEventListener("click",() => moveLightbox(-1));
 
 document.getElementById("lightboxNext")
-  .addEventListener("click", () => moveLightbox(1));
+  .addEventListener("click",() => moveLightbox(1));
 
-document.addEventListener("keydown", (e) => {
+document.addEventListener("keydown",e => {
   if (lightbox.hidden) return;
 
   if (e.key === "Escape") closeLightbox();
-  if (e.key === "ArrowLeft") moveLightbox(-1);
-  if (e.key === "ArrowRight") moveLightbox(1);
+
+  if (e.target !== lightboxVideo) {
+    if (e.key === "ArrowLeft") moveLightbox(-1);
+    if (e.key === "ArrowRight") moveLightbox(1);
+  }
 
   if (e.key === "Tab") {
     const controls = [
       document.getElementById("lightboxClose"),
       document.getElementById("lightboxPrev"),
+      ...(lightboxVideo.hidden ? [] : [lightboxVideo]),
       document.getElementById("lightboxNext")
     ];
+
     const current = controls.indexOf(document.activeElement);
+
     if (e.shiftKey && current === 0) {
       e.preventDefault();
-      controls[2].focus();
-    } else if (!e.shiftKey && current === 2) {
+      controls[controls.length - 1].focus();
+    } else if (
+      !e.shiftKey &&
+      current === controls.length - 1
+    ) {
       e.preventDefault();
       controls[0].focus();
     }
@@ -533,18 +606,23 @@ document.addEventListener("keydown", (e) => {
 
 let touchStartX = 0;
 
-lightbox.addEventListener("touchstart", (e) => {
+lightbox.addEventListener("touchstart",e => {
   touchStartX = e.changedTouches[0].screenX;
-}, {passive:true});
+},{passive:true});
 
-lightbox.addEventListener("touchend", (e) => {
+lightbox.addEventListener("touchend",e => {
   const difference =
     e.changedTouches[0].screenX - touchStartX;
+
+  if (!lightboxVideo.hidden &&
+      !lightboxImage.hidden) return;
+
+  if (!lightboxVideo.hidden) return;
 
   if (Math.abs(difference) > 50) {
     moveLightbox(difference < 0 ? 1 : -1);
   }
-}, {passive:true});
+},{passive:true});
 
 loadEvents();
 </script>
